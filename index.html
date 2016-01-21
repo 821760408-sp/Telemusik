@@ -1,0 +1,211 @@
+<!doctype HTML>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="dist/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="dist/webpd-latest.js"></script>
+    <script type="text/javascript" src="dist/jquery.kontrol.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=IM+Fell+English+SC' rel='stylesheet' type='text/css'>
+    <link href='assets/examples.css' rel='stylesheet' type='text/css'>
+    <link href='assets/layout.css' rel='stylesheet' type='text/css'>
+</head>
+
+<body class='layout-default'>
+
+<div id="loading">Loading ...</div>
+<button id="startButton">Telemusik</button>
+
+<script>
+    $(function() {
+
+        // ring modulator frequency
+        $('.dial-rm').dial({
+                    min: 8000
+                    , max: 12000
+                    , noScroll: true
+                    , displayInput: false
+                    , displayPrevious: true
+                    , fgColor: "#FFFFFF"
+                    , bgColor: "#444444"
+                    , thickness: .3
+                    , change: function (v) {
+                        Pd.send(patch.patchId + '-frequency', [20000 - v]);
+                    }
+                })
+                .css({display:'inline',padding:'0px 10px'});
+
+        // phase modulator frequency
+        $('.dial-pmfreq').dial({
+                    min:1
+                    , max:10
+                    , noScroll: true
+                    , displayInput: false
+                    , displayPrevious: true
+                    , fgColor:"#FFFFFF"
+                    , bgColor:"#444444"
+                    , thickness: .3
+                    , release: function (v) {
+                        Pd.send(patch.patchId + '-pmfreq', [v/10]);
+                    }
+                })
+                .css({display:'inline',padding:'0px 10px'});
+
+        // phase modulator index
+        $('.dial-pmindex').dial({
+                    min:0
+                    , max:200
+                    , noScroll: true
+                    , displayInput: false
+                    , displayPrevious: true
+                    , fgColor:"#FFFFFF"
+                    , bgColor:"#444444"
+                    , thickness: .3
+                    , release: function (v) {
+                        Pd.send(patch.patchId + '-pmindex', [v/100000]);
+                    }
+                })
+                .css({display:'inline',padding:'0px 10px'});
+
+        // xfade
+        $('.dial-xfade').dial({
+                    min:0
+                    , max:1000
+                    , noScroll: true
+                    , displayInput: false
+                    , displayPrevious: true
+                    , fgColor:"#FFFFFF"
+                    , bgColor:"#444444"
+                    , thickness: .3
+                    , change: function (v) {
+                        Pd.send(patch.patchId + '-xfade', [v/1000]);
+                    }
+                })
+                .css({display:'inline',padding:'0px 10px'});
+
+        // global reverb
+        $('#dial-reverb').dial({
+                    min:0
+                    , max:1000
+                    , noScroll: true
+                    , displayInput: false
+                    , displayPrevious: true
+                    , fgColor:"#FFFFFF"
+                    , bgColor:"#444444"
+                    , thickness: .3
+                    , release: function (v) {
+                        Pd.send(patch.patchId + '-delayA', [v]);
+                        Pd.send(patch.patchId + '-delayB', [v+42]);
+                        Pd.send(patch.patchId + '-delayC', [v+64]);
+                        Pd.send(patch.patchId + '-delayD', [v+76]);
+                    }
+                })
+                .css({display:'inline',padding:'0px 10px'});
+    });
+</script>
+
+<div class="rack">
+
+    <div style="margin: 200px;">
+        <!--<div style="float:left;width:420px;">-->
+        <!--<div style="width: 400px;height:200px;padding:10px">-->
+        <div style="float: left; width: 115px; height: 230px"></div>
+
+        <div style="float: left; width: 216px">
+
+            <div style="margin: auto; height: 30px; font-size: 20px">RADICALIZE</div>
+
+            <input class="dial-rm" data-width="180" data-height="200" value="8000">
+
+        </div>
+
+        <div style="float: left; width: 115px; height: 230px"></div>
+
+        <div style="float: left; width: 216px">
+
+            <div style="margin: auto; height: 30px; font-size: 20px;">EXPLOIT</div>
+
+            <input class="dial-pmfreq" data-width="180" data-height="200" value="1">
+
+        </div>
+
+        <div style="float: left; width: 115px; height: 230px"></div>
+
+        <div style="float: left; width: 216px">
+
+            <div style="margin: auto; height: 30px; font-size: 20px;">DISTORT</div>
+
+            <input class="dial-pmindex" data-width="180" data-height="200" value="0">
+
+        </div>
+
+        <div style="float: left; width: 115px; height: 230px"></div>
+
+        <div style="float: left; width: 216px">
+
+            <div style="margin: auto; height: 30px; font-size: 20px;">POLARIZE</div>
+
+            <input class="dial-xfade" data-width="180" data-height="200" value="0">
+
+        </div>
+
+        <!--<div style="float: left; width: 115px; height: 230px"></div>-->
+
+        <!--<div style="float: left; width:216px">-->
+
+            <!--<div style="margin: auto; height: 30px; font-size: 20px;">INTOLERANCE</div>-->
+
+            <!--<input id="dial-reverb" data-width="180" data-height="200" value="101">-->
+
+        <!--</div>-->
+        <!--<div style="float:left;width:216px;">-->
+        <!--<div>delayA</div>-->
+        <!--<label>-->
+        <!--<input class="dial-delayA" data-width="180" data-height="200" value="101">-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div style="float:left;width:216px;">-->
+        <!--<div>delayB</div>-->
+        <!--<label>-->
+        <!--<input class="dial-delayB" data-width="180" data-height="200" value="143">-->
+        <!--</label>-->
+        <!--</div>-->
+
+        <!--<div style="float:left;width:184px;">-->
+        <!--<div>XY</div>-->
+        <!--<label>-->
+        <!--<input class="pad" data-width="180" data-height="180" value='{"x": 50, "y": 67}'>-->
+        <!--</label>-->
+        <!--</div>-->
+
+        <!--</div>-->
+
+        <!--<div style="float:left;width:400px;margin-top:40px;height:240px;padding:10px 10px 10px 10px">-->
+        <!--<div style="margin-bottom:10px">Bars</div>-->
+        <!--<fieldset class="bars" data-width="300" data-cols="4" data-min="55" data-max="100">-->
+        <!--<legend>freqs</legend>-->
+        <!--<label>-->
+        <!--<input value=55>-->
+        <!--</label>-->
+        <!--<label>-->
+        <!--<input value=55>-->
+        <!--</label>-->
+        <!--<label>-->
+        <!--<input value=55>-->
+        <!--</label>-->
+        <!--<label>-->
+        <!--<input value=55>-->
+        <!--</label>-->
+        <!--</fieldset>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<div style="clear:both"></div>
+
+<script type="text/javascript" src="assets/examples.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>
